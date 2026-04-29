@@ -7,8 +7,8 @@
         </div>
         <div class="card-body">
             <div class="text-end">
-                <a class="btn btn-sm btn-dark" href="{{ route('contact.index') }}">Home</a>
-                <a class="btn btn-sm btn-warning" href="{{ route('contact.show', $contact->id) }}">View</a>
+                <a class="btn btn-sm btn-primary" href="{{ route('contact.index') }}"><i class="bi bi-house"></i> Home</a>
+                <a class="btn btn-sm btn-warning" href="{{ route('contact.show', $contact->id) }}"><i class="bi bi-eye"></i> View</a>
             </div>
 
             @if (session('success'))
@@ -17,7 +17,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            <h5 class="card-title border-bottom text-center">Create</h5>
+            <h5 class="card-title border-bottom text-center">Edit</h5>
             
            <form action="{{ route('contact.update', $contact->id) }}" method="POST">
                 @csrf
@@ -61,3 +61,5 @@
     </div>
 
 </div>
+
+@include('parts.deleteModal')

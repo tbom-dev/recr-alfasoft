@@ -1,5 +1,7 @@
 @extends('template')
 
+@section('title', 'Listing')
+
 <div class="d-flex justify-content-center">
     <div class="card text-center">
         <div class="card-header">
@@ -7,13 +9,21 @@
         </div>
         <div class="card-body">
             <div class="text-end">
+                @php
+                    $buttonDisabled = '';
+                    $linkDisabled = '';
+                @endphp
                 @auth
-                    <a class="btn btn-sm btn-secondary" href="{{ route('login.logout') }}">Logout</a>
+                    <a class="btn btn-sm btn-secondary" href="{{ route('login.logout') }}"><i class="bi bi-box-arrow-left"></i> Logout</a>                    
                 @endauth
                 @guest
-                    <a class="btn btn-sm btn-info" href="{{ route('login.view') }}">Login</a>
+                    <a class="btn btn-sm btn-warning" href="{{ route('login.view') }}"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    @php
+                        $buttonDisabled = 'disabled';
+                        $linkDisabled = 'disabled';
+                    @endphp
                 @endguest                
-                <a class="btn btn-sm btn-dark" href="{{ route('contact.create') }}">+ Novo</a>
+                <a class="btn btn-sm btn-success {{$linkDisabled}}" href="{{ route('contact.create') }}">+ Novo</a>
             </div>
 
             @if (session('success'))
@@ -42,20 +52,14 @@
                             <td>{{ $c->contact }}</td>
                             <td>{{ $c->email }}</td>
                             <td>
-                                <a href="{{ route('contact.show', ['contact' => $c->id]) }}" class="btn btn-sm btn-outline-primary">View</a>
-                                <a href="{{ route('contact.edit', ['contact' => $c->id]) }}" class="btn btn-sm btn-outline-warning">Edit</a>
-
-                                {{-- <form action="{{ route('contact.destroy', $c->id) }}" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </form> --}}
+                                <a href="{{ route('contact.show', ['contact' => $c->id]) }}" class="btn btn-sm btn-outline-primary {{$linkDisabled}}"><i class="bi bi-eye"></i> View</a>
+                                <a href="{{ route('contact.edit', ['contact' => $c->id]) }}" class="btn btn-sm btn-outline-warning {{$linkDisabled}}"><i class="bi bi-pencil-square"></i> Edit</a>
 
                                 <button type="button" class="btn btn-sm btn-outline-danger" 
                                     data-bs-toggle="modal" 
                                         data-bs-target="#deleteModal" 
-                                        data-url="{{ route('contact.destroy', $c->id) }}">
-                                    Delete
+                                        data-url="{{ route('contact.destroy', $c->id) }}" {{$buttonDisabled}}>
+                                    <i class="bi bi-trash3-fill"></i> Delete
                                 </button>
                             </td>
                         </tr>
@@ -74,34 +78,4 @@
 
 </div>
 
-<div class="modal" tabindex="-1" id="deleteModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to delete the data?</p>
-            </div>
-            <form action="" method="POST" id="deleteForm">
-                @csrf
-                @method('DELETE')
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
-                    <button type="submit" class="btn btn-danger">Yes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    var deleteModal = document.getElementById('deleteModal');
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        var url = button.getAttribute('data-url');
-        var formModal = document.getElementById('deleteForm');
-        formModal.setAttribute('action', url);
-    });
-</script>
+@include('parts.deleteModal')

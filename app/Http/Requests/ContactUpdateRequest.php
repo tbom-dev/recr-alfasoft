@@ -26,7 +26,7 @@ class ContactUpdateRequest extends FormRequest
         return [
             'name' => ['string', 'required'],
             'email' => ['string', 'required', 'email', Rule::unique('contacts')->ignore($id)],
-            'contact' => ['string', 'required'],
+            'contact' => 'required|string|min:9|max:9',
         ];
     }
 }

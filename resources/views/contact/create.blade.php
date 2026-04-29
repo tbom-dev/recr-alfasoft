@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
             <div class="text-end">
-                <a class="btn btn-sm btn-dark" href="{{ route('contact.index') }}">Home</a>
+                <a class="btn btn-sm btn-dark" href="{{ route('contact.index') }}"><i class="bi bi-house"></i> Home</a>
             </div>
             <h5 class="card-title border-bottom text-center">Create</h5>
             
